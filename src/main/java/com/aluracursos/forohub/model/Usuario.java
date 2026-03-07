@@ -14,12 +14,9 @@ public class Usuario implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private String nombre;
-
     @Column(unique = true)
     private String email;
-
     private String password;
 
     // Constructor vacío para JPA
@@ -70,8 +67,5 @@ public class Usuario implements UserDetails {
 
     public String getPassword() { return password; }
     public void setPassword(String password) { this.password = password; }
-
-
-
 
 }

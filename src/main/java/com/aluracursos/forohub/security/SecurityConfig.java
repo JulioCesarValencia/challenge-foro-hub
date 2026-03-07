@@ -62,6 +62,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authz -> authz
                         .requestMatchers("/auth/login").permitAll() // Permitir acceso público al login
                         .requestMatchers("/topicos/**").authenticated() // Proteger todas las rutas bajo /topicos
+                        .requestMatchers("/auth/register").permitAll()
                         .anyRequest().authenticated() // Cualquier otra solicitud requiere autenticación
                 )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class); // Añade el filtro JWT antes del filtro de autenticación por formulario

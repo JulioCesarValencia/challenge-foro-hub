@@ -58,7 +58,8 @@ public class TokenService {
         // Genera una fecha de expiración (por ejemplo, 2 horas desde ahora)
         private Instant generarFechaExpiracion() {
             return LocalDateTime.now()
-                    .plusHours(2) // El token expira en 2 horas
+                    .plusDays(1) // expira en un dia solo mientras construyo la app
+                    //.plusHours(2) // El token expira en 2 horas
                     .toInstant(ZoneOffset.of("-05:00"));
         }
 }
