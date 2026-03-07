@@ -7,10 +7,13 @@ import com.aluracursos.forohub.model.Usuario;
 import com.aluracursos.forohub.repository.TopicoRepository;
 import com.aluracursos.forohub.repository.UsuarioRepository;
 import jakarta.validation.Valid;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -30,9 +33,8 @@ public class TopicoController {
     private UsuarioRepository usuarioRepository;
 
     @PostMapping
-    public ResponseEntity<?> crearTopico(@Valid @RequestBody TopicoRequestDto topicoRequestDto, Authentication authentication) {
-        {
-            //solo para pruebas hay que cambiar a jwt
+    public ResponseEntity<?> crearTopico(@Valid @RequestBody TopicoRequestDto topicoRequestDto,
+                                         Authentication authentication) {
 
             logger.info("TopicoController: Iniciando creación de tópico. Usuario autenticado: {}", authentication.getName());
 
@@ -73,5 +75,36 @@ public class TopicoController {
         }
 
 
+    @GetMapping
+    public ResponseEntity<Page<TopicoResponseDto>> listarTopicos(
+            @RequestParam(required = false) String curso,
+            @PageableDefault(
+                    size = 10,
+                    sort = "fechaCreacion",
+                    direction = Sort.Direction.ASC
+            ) Pageable paginacion
+    ) {
+
+        Page<Topico> paginaTopicos;
+
+        // Aplicar filtro si se proporciona el nombre del curso
+        if(curso !=null&&!curso.isBlank()) {
+            paginaTopicos = topicoRepository.findByCurso(curso, paginacion);
+        } else {
+            // Si no hay filtro, obtener todos los tópicos con paginación y orden
+            paginaTopicos = topicoRepository.findAll(paginacion);
+        }
+
+        // Transformar la página de entidades Topico en una página de DTOs DatosListadoTopico
+        var respuesta = paginaTopicos.map(TopicoResponseDto::new);
+
+        // Devolver la respuesta con estado 200 OK y el objeto Page con los DTOs
+        return ResponseEntity.ok(respuesta);
+
     }
+
+
 }
+
+
+
