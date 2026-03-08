@@ -22,7 +22,7 @@ public class RegistrationService {
             throw new RuntimeException("Ya existe un usuario registrado con el email: " + registerDto.email());
         }
 
-        // 2. Hashear la contraseña recibida
+
         String passwordHasheada = passwordEncoder.encode(registerDto.password());
 
         Usuario nuevoUsuario = new Usuario();

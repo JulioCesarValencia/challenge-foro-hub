@@ -8,7 +8,6 @@ import io.swagger.v3.oas.models.security.SecurityScheme;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import java.util.*;
 
 @Configuration
 public class OpenApiConfig {
@@ -18,13 +17,13 @@ public class OpenApiConfig {
     public OpenAPI customOpenAPI() {
         // Define el esquema de seguridad como HTTP Bearer Token
         SecurityScheme bearerTokenScheme = new SecurityScheme()
-                .type(SecurityScheme.Type.HTTP) // Tipo de autenticación: HTTP
-                .scheme("bearer")              // Esquema: bearer
-                .bearerFormat("JWT")           // Formato: JWT (esto es informativo)
-                .in(SecurityScheme.In.HEADER)  // Donde se envía el token: en el encabezado HTTP
-                .name("Authorization");        // Nombre del encabezado: Authorization
+                .type(SecurityScheme.Type.HTTP)
+                .scheme("bearer")
+                .bearerFormat("JWT")
+                .in(SecurityScheme.In.HEADER)
+                .name("Authorization");
 
-        // Crea el componente que contiene el esquema de seguridad
+
         Components components = new Components()
                 .addSecuritySchemes("bearer-key", bearerTokenScheme);
 
@@ -32,10 +31,9 @@ public class OpenApiConfig {
                 .addList("bearer-key");
 
 
-        // Crea la configuración OpenAPI y le asigna los componentes
+        // Crea la configuracion OpenAPI y le asigna los componentes
         return new OpenAPI()
-                .components(components) // Agrega los componentes (que incluyen el esquema de seguridad)
-                //.addSecurityItem(new SecurityRequirement().addList("bearer-key"));
+                .components(components)
                 .addSecurityItem(securityRequirement);
     }
 

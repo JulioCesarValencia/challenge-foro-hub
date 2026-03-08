@@ -8,8 +8,6 @@ import com.aluracursos.forohub.repository.TopicoRepository;
 import com.aluracursos.forohub.repository.UsuarioRepository;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -28,8 +26,6 @@ import java.util.Optional;
 @RequestMapping("/topicos")
 public class TopicoController {
 
-    private static final Logger logger = LoggerFactory.getLogger(TopicoController.class);
-
     @Autowired
     private TopicoRepository topicoRepository;
 
@@ -40,8 +36,6 @@ public class TopicoController {
     @SecurityRequirement(name = "bearer-key")
     public ResponseEntity<?> crearTopico(@Valid @RequestBody TopicoRequestDto topicoRequestDto,
                                          Authentication authentication) {
-
-            logger.info("TopicoController: Iniciando creación de tópico. Usuario autenticado: {}", authentication.getName());
 
 
             Usuario usuarioAutenticado = (Usuario) authentication.getPrincipal();
@@ -64,7 +58,7 @@ public class TopicoController {
 
             Topico topicoGuardado = topicoRepository.save(topicoToSave);
 
-            // Crear el DTO de respuesta
+            // DTO de respuesta
             TopicoResponseDto responseDto = new TopicoResponseDto(
                     topicoGuardado.getId(),
                     topicoGuardado.getTitulo(),
@@ -93,18 +87,16 @@ public class TopicoController {
 
         Page<Topico> paginaTopicos;
 
-        // Aplicar filtro si se proporciona el nombre del curso
+
         if(curso !=null&&!curso.isBlank()) {
             paginaTopicos = topicoRepository.findByCurso(curso, paginacion);
         } else {
-            // Si no hay filtro, obtener todos los tópicos con paginación y orden
             paginaTopicos = topicoRepository.findAll(paginacion);
         }
 
-        // Transformar la página de entidades Topico en una página de DTOs DatosListadoTopico
         var respuesta = paginaTopicos.map(TopicoResponseDto::new);
 
-        // Devolver la respuesta con estado 200 OK y el objeto Page con los DTOs
+        // Devolver respuesta con estado 200 OK
         return ResponseEntity.ok(respuesta);
 
     }
@@ -112,16 +104,12 @@ public class TopicoController {
     @GetMapping("/{id}")
     @SecurityRequirement(name = "bearer-key")
     public ResponseEntity<TopicoResponseDto> obtenerDetalleTopico(@PathVariable Long id) {
-        logger.info("TopicoController.obtenerDetalleTopico: Buscando tópico con ID: {}", id);
-        // Buscar el tópico por ID
+
         Topico topico = topicoRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Tópico no encontrado con ID: " + id));
-        logger.info("TopicoController.obtenerDetalleTopico: Tópico encontrado: ID {}, Titulo: {}", topico.getId(), topico.getTitulo());
 
-        // Convertir la entidad encontrada al DTO de respuesta
         TopicoResponseDto detalleTopico = new TopicoResponseDto(topico);
 
-        // Devolver el DTO con estado 200 OK
         return ResponseEntity.ok(detalleTopico);
     }
 
@@ -133,7 +121,6 @@ public class TopicoController {
             @Valid @RequestBody TopicoRequestDto datosActualizar,
             Authentication authentication
     ) {
-        logger.info("TopicoController.actualizarTopico: Iniciando actualización del tópico con ID: {}. Usuario autenticado: {}", id, authentication.getName());
         Optional<Topico> topicoOptional = topicoRepository.findById(id);
 
         if (topicoOptional.isPresent()) {
@@ -151,11 +138,9 @@ public class TopicoController {
 
             TopicoResponseDto respuestaDto = new TopicoResponseDto(topicoActualizado);
 
-            logger.info("TopicoController.actualizarTopico: Tópico con ID {} actualizado exitosamente.", id);
 
             return ResponseEntity.ok(respuestaDto);
         } else {
-            logger.warn("TopicoController.actualizarTopico: Tópico no encontrado para actualizar con ID: {}", id);
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Tópico no encontrado con ID: " + id);
         }
 
@@ -168,8 +153,6 @@ public class TopicoController {
             @PathVariable Long id,
             Authentication authentication
     ) {
-        logger.info("TopicoController.eliminarTopico: Iniciando eliminación del tópico ID: {}. Usuario autenticado: {}", id, authentication.getName());
-        logger.info("TopicoController.eliminarTopico: Authentication Principal: {}", authentication.getPrincipal());
 
         Optional<Topico> topicoOptional = topicoRepository.findById(id);
 
@@ -177,17 +160,13 @@ public class TopicoController {
         if (topicoOptional.isPresent()) {
             Topico topicoExistente = topicoOptional.get();
 
-            logger.info("TopicoController.eliminarTopico: Tópico encontrado para eliminar: ID {}, Titulo: {}", topicoExistente.getId(), topicoExistente.getTitulo());
-
 
             topicoRepository.deleteById(id);
 
-            logger.info("TopicoController.eliminarTopico: Tópico con ID {} eliminado exitosamente.", id);
 
             return ResponseEntity.noContent().build();
 
         } else {
-            logger.warn("TopicoController.eliminarTopico: Tópico NO encontrado para eliminar con ID: {}. Lanzando NOT_FOUND.", id);
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Tópico no encontrado con ID: " + id);
         }
     }

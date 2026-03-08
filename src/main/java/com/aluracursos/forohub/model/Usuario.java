@@ -1,6 +1,10 @@
 package com.aluracursos.forohub.model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -10,6 +14,10 @@ import java.util.List;
 
 @Entity
 @Table(name = "usuarios")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode(of = "id")
 public class Usuario implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,8 +27,11 @@ public class Usuario implements UserDetails {
     private String email;
     private String password;
 
-    // Constructor vacío para JPA
-    public Usuario() {}
+
+    // Constructor vacío explícito para JPA
+    public Usuario() {
+
+    }
 
     // Constructor
     public Usuario(String nombre, String email, String password) {

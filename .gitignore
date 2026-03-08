@@ -1,8 +1,12 @@
-HELP.md
+# Directorio de salida de compilación de Maven. ¡Muy importante ignorarlo!
 target/
+
+# Archivo específico (ignorado si no es relevante para el código fuente)
+HELP.md
+
+# Wrapper de Maven (opcional: ignorar solo el jar)
 .mvn/wrapper/maven-wrapper.jar
-!**/src/main/**/target/
-!**/src/test/**/target/
+
 
 ### STS ###
 .apt_generated
@@ -25,9 +29,7 @@ target/
 /dist/
 /nbdist/
 /.nb-gradle/
-build/
-!**/src/main/**/build/
-!**/src/test/**/build/
+
 
 ### VS Code ###
 .vscode/

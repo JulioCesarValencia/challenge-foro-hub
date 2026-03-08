@@ -57,16 +57,17 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.csrf(csrf -> csrf.disable()) // Deshabilita CSRF, común en APIs REST sin sesiones
+        http.csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authz -> authz
-                        .requestMatchers("/auth/login").permitAll() // Permitir acceso público al login
-                        .requestMatchers("/topicos/**").authenticated() // Proteger todas las rutas bajo /topicos
+                        .requestMatchers("/auth/login").permitAll()
+                        .requestMatchers("/topicos/**").authenticated()
                         .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/webjars/**").permitAll()
                         .requestMatchers("/auth/register").permitAll()
-                        .anyRequest().authenticated() // Cualquier otra solicitud requiere autenticación
+                        // Cualquier otra solicitud requiere autenticación
+                        .anyRequest().authenticated()
                 )
-                .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class); // Añade el filtro JWT antes del filtro de autenticación por formulario
+                .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }

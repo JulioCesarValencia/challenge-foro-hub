@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "topicos")
 @Data
-@NoArgsConstructor
+//@NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of = "id")
 public class Topico {
@@ -39,8 +39,11 @@ public class Topico {
     @NotBlank(message = "El curso es obligatorio")
     private String curso;
 
-    // Constructor vacío para JPA
-    public Topico() {}
+    public Topico(){
+
+    }
+
+
 
     // Constructor
     public Topico(String titulo, String mensaje, LocalDateTime fechaCreacion, String status, Usuario autor, String curso) {

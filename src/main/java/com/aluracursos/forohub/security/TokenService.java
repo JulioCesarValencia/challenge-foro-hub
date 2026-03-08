@@ -16,9 +16,6 @@ import java.time.ZoneOffset;
 @Service
 public class TokenService {
 
-    //private static final String SECRET_KEY = "Mi clave sereta para forohub";
-    //private static final String ISSUER = "forohub-api";
-
     @Value("${app.jwt.secret}")
     private String secretKey;
 
@@ -56,21 +53,16 @@ public class TokenService {
                         .build()
                         .verify(token);
 
-                // Devuelve el 'subject', que debería ser el email del usuario
                 return decodedJWT.getSubject();
 
             } catch (JWTVerificationException exception) {
-                // Excepción lanzada si el token es inválido o ha expirado
                 throw new RuntimeException("Token JWT inválido o expirado", exception);
             }
         }
 
-        // Genera una fecha de expiración (por ejemplo, 2 horas desde ahora)
         private Instant generarFechaExpiracion() {
             return LocalDateTime.now()
                     .plusMinutes(expirationInMinutes)
-                    //.plusDays(1) // expira en un dia solo mientras construyo la app
-                    //.plusHours(2) // El token expira en 2 horas
                     .toInstant(ZoneOffset.of("-05:00"));
         }
 }

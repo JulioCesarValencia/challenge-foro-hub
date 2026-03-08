@@ -8,7 +8,6 @@ import com.aluracursos.forohub.service.RegistrationService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,9 +22,9 @@ public class AuthController {
     private AuthenticationService authenticationService;
 
     @Autowired
-    private RegistrationService registrationService; // Inyectamos el nuevo servicio
+    private RegistrationService registrationService;
 
-    @PostMapping("/login") // Endpoint para login: POST /auth/login
+    @PostMapping("/login")
     public ResponseEntity<AuthenticationResponseDto> authenticate(@RequestBody @Valid AuthenticationRequestDto request) {
         try {
             AuthenticationResponseDto response = authenticationService.authenticate(request);
@@ -35,12 +34,12 @@ public class AuthController {
             return ResponseEntity.status(org.springframework.http.HttpStatus.UNAUTHORIZED).build();
         }
     }
-    @PostMapping("/register") // Nuevo endpoint para registro: POST /auth/register
+    @PostMapping("/register")
     public ResponseEntity<String> register(@RequestBody @Valid RegisterUserDto registerDto) {
         try {
             // Llama al servicio de registro
             registrationService.registerUser(registerDto);
-            // Devuelve una respuesta de éxito
+            // Devuelve una respuesta exitosa
             return ResponseEntity.ok("Usuario registrado exitosamente.");
         } catch (RuntimeException e) {
             // Maneja el error de usuario duplicado (u otros) devolviendo un 400
