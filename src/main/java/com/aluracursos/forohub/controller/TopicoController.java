@@ -18,6 +18,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
+
+import java.util.Optional;
 
 
 @RestController
@@ -101,6 +104,86 @@ public class TopicoController {
         // Devolver la respuesta con estado 200 OK y el objeto Page con los DTOs
         return ResponseEntity.ok(respuesta);
 
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<TopicoResponseDto> obtenerDetalleTopico(@PathVariable Long id) {
+        logger.info("TopicoController.obtenerDetalleTopico: Buscando tópico con ID: {}", id);
+        // Buscar el tópico por ID
+        Topico topico = topicoRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Tópico no encontrado con ID: " + id));
+        logger.info("TopicoController.obtenerDetalleTopico: Tópico encontrado: ID {}, Titulo: {}", topico.getId(), topico.getTitulo());
+
+        // Convertir la entidad encontrada al DTO de respuesta
+        TopicoResponseDto detalleTopico = new TopicoResponseDto(topico);
+
+        // Devolver el DTO con estado 200 OK
+        return ResponseEntity.ok(detalleTopico);
+    }
+
+
+    @PutMapping("/{id}")
+    public ResponseEntity<TopicoResponseDto> actualizarTopico(
+            @PathVariable Long id,
+            @Valid @RequestBody TopicoRequestDto datosActualizar,
+            Authentication authentication
+    ) {
+        logger.info("TopicoController.actualizarTopico: Iniciando actualización del tópico con ID: {}. Usuario autenticado: {}", id, authentication.getName());
+        Optional<Topico> topicoOptional = topicoRepository.findById(id);
+
+        if (topicoOptional.isPresent()) {
+            Topico topicoExistente = topicoOptional.get();
+
+            if (topicoRepository.existsByTituloAndMensajeAndIdNot(datosActualizar.titulo(), datosActualizar.mensaje(), id)) {
+                return ResponseEntity.badRequest().body(null);
+            }
+
+            topicoExistente.setTitulo(datosActualizar.titulo());
+            topicoExistente.setMensaje(datosActualizar.mensaje());
+            topicoExistente.setCurso(datosActualizar.curso());
+
+            Topico topicoActualizado = topicoRepository.save(topicoExistente);
+
+            TopicoResponseDto respuestaDto = new TopicoResponseDto(topicoActualizado);
+
+            logger.info("TopicoController.actualizarTopico: Tópico con ID {} actualizado exitosamente.", id);
+
+            return ResponseEntity.ok(respuestaDto);
+        } else {
+            logger.warn("TopicoController.actualizarTopico: Tópico no encontrado para actualizar con ID: {}", id);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Tópico no encontrado con ID: " + id);
+        }
+
+    }
+
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> eliminarTopico(
+            @PathVariable Long id,
+            Authentication authentication
+    ) {
+        logger.info("TopicoController.eliminarTopico: Iniciando eliminación del tópico ID: {}. Usuario autenticado: {}", id, authentication.getName());
+        logger.info("TopicoController.eliminarTopico: Authentication Principal: {}", authentication.getPrincipal());
+
+        Optional<Topico> topicoOptional = topicoRepository.findById(id);
+
+
+        if (topicoOptional.isPresent()) {
+            Topico topicoExistente = topicoOptional.get();
+
+            logger.info("TopicoController.eliminarTopico: Tópico encontrado para eliminar: ID {}, Titulo: {}", topicoExistente.getId(), topicoExistente.getTitulo());
+
+
+            topicoRepository.deleteById(id);
+
+            logger.info("TopicoController.eliminarTopico: Tópico con ID {} eliminado exitosamente.", id);
+
+            return ResponseEntity.noContent().build();
+
+        } else {
+            logger.warn("TopicoController.eliminarTopico: Tópico NO encontrado para eliminar con ID: {}. Lanzando NOT_FOUND.", id);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Tópico no encontrado con ID: " + id);
+        }
     }
 
 

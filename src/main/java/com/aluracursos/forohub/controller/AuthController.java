@@ -8,6 +8,8 @@ import com.aluracursos.forohub.service.RegistrationService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,10 +27,14 @@ public class AuthController {
 
     @PostMapping("/login") // Endpoint para login: POST /auth/login
     public ResponseEntity<AuthenticationResponseDto> authenticate(@RequestBody @Valid AuthenticationRequestDto request) {
-        AuthenticationResponseDto response = authenticationService.authenticate(request);
-        return ResponseEntity.ok(response);
-    }
+        try {
+            AuthenticationResponseDto response = authenticationService.authenticate(request);
+            return ResponseEntity.ok(response);
 
+        } catch (AuthenticationException e) {
+            return ResponseEntity.status(org.springframework.http.HttpStatus.UNAUTHORIZED).build();
+        }
+    }
     @PostMapping("/register") // Nuevo endpoint para registro: POST /auth/register
     public ResponseEntity<String> register(@RequestBody @Valid RegisterUserDto registerDto) {
         try {

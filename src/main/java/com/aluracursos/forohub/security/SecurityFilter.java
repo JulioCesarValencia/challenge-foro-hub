@@ -56,6 +56,9 @@ public class SecurityFilter extends OncePerRequestFilter {
                 );
                 SecurityContextHolder.getContext().setAuthentication(authentication);
                 logger.info("SecurityFilter: Autenticación configurada en el contexto de seguridad para el usuario: {}", usuario.getUsername());
+
+                logger.info("SecurityFilter: Sobre a llamar a filterChain.doFilter(). Autenticación debería estar lista.");
+
             } catch (RuntimeException e) {
                 logger.warn("SecurityFilter: Error al validar token o cargar usuario: {}", e.getMessage());
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
