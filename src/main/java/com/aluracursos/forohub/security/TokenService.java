@@ -6,6 +6,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -15,15 +16,24 @@ import java.time.ZoneOffset;
 @Service
 public class TokenService {
 
-    private static final String SECRET_KEY = "Mi clave sereta para forohub";
-    private static final String ISSUER = "forohub-api";
+    //private static final String SECRET_KEY = "Mi clave sereta para forohub";
+    //private static final String ISSUER = "forohub-api";
+
+    @Value("${app.jwt.secret}")
+    private String secretKey;
+
+    @Value("${app.jwt.issuer}")
+    private String issuer;
+
+    @Value("${app.jwt.expiration-in-minutes}")
+    private Long expirationInMinutes; // Duración en minutos
 
     public String generarToken(Usuario usuario) {
         try {
-            Algorithm algorithm = Algorithm.HMAC256(SECRET_KEY);
+            Algorithm algorithm = Algorithm.HMAC256(secretKey);
 
             String token = JWT.create()
-                    .withIssuer(ISSUER)
+                    .withIssuer(issuer)
                     .withSubject(usuario.getEmail())
                     .withClaim("id", usuario.getId())
                     .withClaim("nombre", usuario.getNombre())
@@ -39,10 +49,10 @@ public class TokenService {
 
         public String validarToken(String token) {
             try {
-                Algorithm algorithm = Algorithm.HMAC256(SECRET_KEY);
+                Algorithm algorithm = Algorithm.HMAC256(secretKey);
                 // Verifica el token: firma, expiración, issuer (si lo pones)
                 DecodedJWT decodedJWT = JWT.require(algorithm)
-                        .withIssuer(ISSUER)
+                        .withIssuer(issuer)
                         .build()
                         .verify(token);
 
@@ -58,7 +68,8 @@ public class TokenService {
         // Genera una fecha de expiración (por ejemplo, 2 horas desde ahora)
         private Instant generarFechaExpiracion() {
             return LocalDateTime.now()
-                    .plusDays(1) // expira en un dia solo mientras construyo la app
+                    .plusMinutes(expirationInMinutes)
+                    //.plusDays(1) // expira en un dia solo mientras construyo la app
                     //.plusHours(2) // El token expira en 2 horas
                     .toInstant(ZoneOffset.of("-05:00"));
         }

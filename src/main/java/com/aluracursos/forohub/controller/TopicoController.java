@@ -6,6 +6,7 @@ import com.aluracursos.forohub.model.Topico;
 import com.aluracursos.forohub.model.Usuario;
 import com.aluracursos.forohub.repository.TopicoRepository;
 import com.aluracursos.forohub.repository.UsuarioRepository;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,6 +37,7 @@ public class TopicoController {
     private UsuarioRepository usuarioRepository;
 
     @PostMapping
+    @SecurityRequirement(name = "bearer-key")
     public ResponseEntity<?> crearTopico(@Valid @RequestBody TopicoRequestDto topicoRequestDto,
                                          Authentication authentication) {
 
@@ -79,6 +81,7 @@ public class TopicoController {
 
 
     @GetMapping
+    @SecurityRequirement(name = "bearer-key")
     public ResponseEntity<Page<TopicoResponseDto>> listarTopicos(
             @RequestParam(required = false) String curso,
             @PageableDefault(
@@ -107,6 +110,7 @@ public class TopicoController {
     }
 
     @GetMapping("/{id}")
+    @SecurityRequirement(name = "bearer-key")
     public ResponseEntity<TopicoResponseDto> obtenerDetalleTopico(@PathVariable Long id) {
         logger.info("TopicoController.obtenerDetalleTopico: Buscando tópico con ID: {}", id);
         // Buscar el tópico por ID
@@ -123,6 +127,7 @@ public class TopicoController {
 
 
     @PutMapping("/{id}")
+    @SecurityRequirement(name = "bearer-key")
     public ResponseEntity<TopicoResponseDto> actualizarTopico(
             @PathVariable Long id,
             @Valid @RequestBody TopicoRequestDto datosActualizar,
@@ -158,6 +163,7 @@ public class TopicoController {
 
 
     @DeleteMapping("/{id}")
+    @SecurityRequirement(name = "bearer-key")
     public ResponseEntity<?> eliminarTopico(
             @PathVariable Long id,
             Authentication authentication
