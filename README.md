@@ -354,7 +354,7 @@ Este proyecto está licenciado bajo la Licencia MIT. Consulta el archivo LICENSE
 ## 👨‍💻 Autor
 
 <div align="center">
-  <img src="E:\PROYECTO_ONE_Education(Tech Foundation)\challenge-forohub\assets\images\dev.jpg" width="120" height="120" style="border-radius: 50%;" alt="Julio Cesar Valencia">
+  <img src="assets\images\dev.jpg" width="120" height="120" style="border-radius: 50%;" alt="Julio Cesar Valencia">
   <br>
   <strong>Tu Nombre Completo</strong>
   <br>
