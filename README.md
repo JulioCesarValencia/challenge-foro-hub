@@ -1,10 +1,13 @@
-# ForoHub API
 
 <div align="center">
+  <img src="assets/images/logo.jpg" alt="ForoHub Logo" width="200"/>
+  
+# ForoHub API
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Spring Boot](https://img.shields.io/badge/Spring_Boot-3.5.11-green.svg)](https://spring.io/projects/spring-boot)
-[![Java](https://img.shields.io/badge/Java-17-blue.svg)](https://www.oracle![MySQL](https://img.shields.io/badge/MySQL-8.0-orange.svg)](https://www.mysql.com/)
+[![Java](https://img.shields.io/badge/Java-17-blue.svg)](https://www.oracle.com/java/)
+[![MySQL](https://img.shields.io/badge/MySQL-8.0-orange.svg)](https://www.mysql.com/)
 [![JWT](https://img.shields.io/badge/JWT-Auth-red.svg)](https://jwt.io/)
 
 </div>
@@ -67,7 +70,7 @@ cd forohub-api
 
 ---
 
-## Configurar Variables de Entorno
+### 2. Configurar Variables de Entorno
 La aplicación lee la configuración desde el archivo src/main/resources/application.properties. Debes editar este archivo para adaptarlo a tu entorno local.
 
 Base de Datos
@@ -89,31 +92,31 @@ Duración del Token: Ajusta app.jwt.expiration-in-minutes según tus necesidades
 Ejemplo de application.properties:
 
 properties
-# Configuración del Servidor
+#### Configuración del Servidor
 server.port=8080
-
-# Configuración de la Base de Datos (MySQL)
+```
+## Configuración de la Base de Datos (MySQL)
 spring.datasource.url=jdbc:mysql://localhost:3306/forohub_db?createDatabaseIfNotExist=true
 spring.datasource.username=tu_usuario_mysql
 spring.datasource.password=tu_contraseña_mysql
 spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
 
-# Configuración de JPA / Hibernate
+## Configuración de JPA / Hibernate
 spring.jpa.hibernate.ddl-auto=update # Importante: usar 'update' o 'validate' en producción
 spring.jpa.show-sql=true
 spring.jpa.properties.hibernate.format_sql=true
 
-# Configuración para Flyway (opcional, deshabilitado por defecto)
-# spring.flyway.enabled=false
+## Configuración para Flyway (opcional, deshabilitado por defecto)
+## spring.flyway.enabled=false
 
-# Propiedades para JWT
+## Propiedades para JWT
 app.jwt.secret=UNA_CADENA_DE_CARACTERES_MUY_LARGA_Y_COMPLEJA_Y_SEGURA_CON_CARACTERES_ESPECIALES_NUMEROS_Y_MAYUSCULAS_MINUSCULAS_12345!@#$%^&*()_+-=[]{}|;:,.<>?
 app.jwt.issuer=forohub-api
 app.jwt.expiration-in-minutes=1440 # Expira en 24 horas (ajusta según necesites)
-
+```
 ---
 
-## Ejecutar la Aplicación
+### 3. Ejecutar la Aplicación
 Desde la raíz del proyecto, ejecuta:
 
 bash
@@ -122,7 +125,7 @@ La aplicación iniciará en http://localhost:8080.
 
 ---
 
-📖 Documentación de la API
+## 📖 Documentación de la API
 La API está documentada automáticamente usando Swagger UI. Una vez que la aplicación esté en ejecución, puedes acceder a la interfaz gráfica en:
 
 text
@@ -131,11 +134,28 @@ Allí encontrarás todos los endpoints disponibles, sus parámetros, cuerpos de 
 
 ---
 
-🛠️ Guía de Uso
+## 📸 Demostración
+
+### 🧪 Peticiones con Hoppscotch
+
+<img src="assets\gifs\request_demo.gif" alt="Demostración en Hoppscotch" width="600"/>
+
+*Ejemplo de peticiones realizadas desde Hoppscotch (alternativa a Insomnia/Postman)*
+
+### 📚 Documentación interactiva con Swagger UI
+
+<img src="assets/gifs/swagger_demo.gif" alt="Demostración en Swagger UI" width="600"/>
+
+*Explora y prueba la API directamente desde Swagger UI*
+
+---
+
+## 🛠️ Guía de Uso
 Nota: Todos los endpoints protegidos requieren un token JWT en el encabezado de autorización:
 Authorization: Bearer <tu_token>
 
-## Registro de Usuario
+
+### 1. Registro de Usuario
 Endpoint: POST /auth/register
 
 Descripción: Registra un nuevo usuario en el sistema.
@@ -152,7 +172,8 @@ Respuesta Exitosa: 200 OK o 201 Created (según implementación).
 
 Autenticación: No requerida.
 
-## Inicio de Sesión
+
+### 2. Inicio de Sesión
 Endpoint: POST /auth/login
 
 Descripción: Inicia sesión con credenciales válidas y obtiene un token JWT.
@@ -172,7 +193,8 @@ json
 }
 Autenticación: No requerida.
 
-## Listar Tópicos
+
+### 3. Listar Tópicos
 Endpoint: GET /topicos
 
 Descripción: Obtiene una lista paginada de tópicos.
@@ -208,7 +230,8 @@ json
 }
 Autenticación: Requerida.
 
-## Crear Tópico
+
+### 4. Crear Tópico
 Endpoint: POST /topicos
 
 Descripción: Crea un nuevo tópico.
@@ -235,7 +258,8 @@ json
 }
 Autenticación: Requerida.
 
-## Detalle de Tópico
+
+### 5. Detalle de Tópico
 Endpoint: GET /topicos/{id}
 
 Descripción: Obtiene los detalles de un tópico específico.
@@ -258,7 +282,8 @@ json
 }
 Autenticación: Requerida.
 
-## Actualizar Tópico
+
+### 6. Actualizar Tópico
 Endpoint: PUT /topicos/{id}
 
 Descripción: Actualiza la información de un tópico existente (excepto el autor).
@@ -289,7 +314,8 @@ json
 }
 Autenticación: Requerida.
 
-## Eliminar Tópico
+
+### 7. Eliminar Tópico
 Endpoint: DELETE /topicos/{id}
 
 Descripción: Elimina un tópico específico.
@@ -302,7 +328,9 @@ Respuesta Exitosa: 204 No Content
 
 Autenticación: Requerida.
 
-🔮 Consideraciones Futuras
+---
+
+## 🔮 Consideraciones Futuras
 Roles de Usuario: Implementar roles (Admin, Moderador, Usuario) para controlar permisos de lectura/escritura/eliminación.
 
 CRUD de Usuarios: Permitir que los usuarios actualicen su perfil o eliminen su cuenta.
@@ -317,11 +345,32 @@ Validación Personalizada: Añadir más validaciones específicas del dominio (p
 
 Pruebas Unitarias e Integración: Aumentar la cobertura de pruebas.
 
-📄 Licencia
+---
+### 📄 Licencia
 Este proyecto está licenciado bajo la Licencia MIT. Consulta el archivo LICENSE para más detalles.
 
-🙏 Agradecimientos
+---
+
+## 👨‍💻 Autor
+
+<div align="center">
+  <img src="E:\PROYECTO_ONE_Education(Tech Foundation)\challenge-forohub\assets\images\dev.jpg" width="120" height="120" style="border-radius: 50%;" alt="Julio Cesar Valencia">
+  <br>
+  <strong>Tu Nombre Completo</strong>
+  <br>
+  <a href="https://github.com/JulioCesarValencia">GitHub</a> •
+  <a href="https://linkedin.com/in/julio-cesar-valencia">LinkedIn</a>
+  <br>
+  <sub>Desarrollador Java | Spring Boot | APIs REST</sub>
+</div>
+
+---
+
+## 🙏 Agradecimientos
+
 A la comunidad de Alura por el desafío inspirador.
+
+A **Alura Latam** y **ONE (Oracle Next Education)** por el desafío inspirador.
 
 A Auth0 por la biblioteca java-jwt.
 
@@ -335,5 +384,5 @@ A Swagger / Springdoc por la documentación automática.
 
 A mi amigo y colega Julio César Valencia por su dedicación, paciencia y entusiasmo durante el desarrollo. ¡Tu compromiso fue fundamental para llevar este proyecto a cabo!
 
-<div align="center"> Hecho con ❤️ por [Julio Cesar Valencia] ¡Gracias por visitar! </div> ``
+<div align="center"> Hecho con ❤️ por Julio Cesar Valencia ¡Gracias por visitar! </div> 
 
