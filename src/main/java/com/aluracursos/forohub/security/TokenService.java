@@ -23,7 +23,7 @@ public class TokenService {
     private String issuer;
 
     @Value("${app.jwt.expiration-in-minutes}")
-    private Long expirationInMinutes; // Duración en minutos
+    private Long expirationInMinutes;
 
     public String generarToken(Usuario usuario) {
         try {
@@ -39,7 +39,7 @@ public class TokenService {
 
             return token;
         } catch(JWTCreationException exception) {
-                // Excepción lanzada si ocurre algún problema al crear el token
+
                 throw new RuntimeException("Error al generar el token JWT", exception);
             }
         }
@@ -47,7 +47,6 @@ public class TokenService {
         public String validarToken(String token) {
             try {
                 Algorithm algorithm = Algorithm.HMAC256(secretKey);
-                // Verifica el token: firma, expiración, issuer (si lo pones)
                 DecodedJWT decodedJWT = JWT.require(algorithm)
                         .withIssuer(issuer)
                         .build()

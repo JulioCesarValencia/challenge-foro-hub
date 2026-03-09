@@ -28,9 +28,8 @@ public class RegistrationService {
         Usuario nuevoUsuario = new Usuario();
         nuevoUsuario.setNombre(registerDto.nombre());
         nuevoUsuario.setEmail(registerDto.email());
-        nuevoUsuario.setPassword(passwordHasheada); // <-- Guardamos la contraseña hasheada
+        nuevoUsuario.setPassword(passwordHasheada);
 
-        // 4. Guardar el nuevo usuario en la base de datos
         usuarioRepository.save(nuevoUsuario);
     }
 

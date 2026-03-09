@@ -33,7 +33,6 @@ public class SecurityFilter extends OncePerRequestFilter {
             String token = authHeader.replace("Bearer ", "");
 
             try {
-                // 1. Valida el token y obtiene el email del usuario
                 String emailUsuario = tokenService.validarToken(token);
 
                 UserDetails usuario = usuarioRepository.findByEmail(emailUsuario)
