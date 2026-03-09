@@ -138,7 +138,7 @@ Allí encontrarás todos los endpoints disponibles, sus parámetros, cuerpos de 
 
 ### 🧪 Peticiones con Hoppscotch
 
-<img src="assets\gifs\request_demo.gif" alt="Demostración en Hoppscotch" width="600"/>
+<img src="assets/gifs/request_demo.gif" alt="Demostración en Hoppscotch" width="600"/>
 
 *Ejemplo de peticiones realizadas desde Hoppscotch (alternativa a Insomnia/Postman)*
 
@@ -356,7 +356,7 @@ Este proyecto está licenciado bajo la Licencia MIT. Consulta el archivo LICENSE
 <div align="center">
   <img src="assets\images\dev.jpg" width="120" height="120" style="border-radius: 50%;" alt="Julio Cesar Valencia">
   <br>
-  <strong>Tu Nombre Completo</strong>
+  <strong>Julio Cesar Valencia</strong>
   <br>
   <a href="https://github.com/JulioCesarValencia">GitHub</a> •
   <a href="https://linkedin.com/in/julio-cesar-valencia">LinkedIn</a>
@@ -381,8 +381,6 @@ A Lombok por reducir el código repetitivo.
 A Hibernate por el ORM.
 
 A Swagger / Springdoc por la documentación automática.
-
-A mi amigo y colega Julio César Valencia por su dedicación, paciencia y entusiasmo durante el desarrollo. ¡Tu compromiso fue fundamental para llevar este proyecto a cabo!
 
 <div align="center"> Hecho con ❤️ por Julio Cesar Valencia ¡Gracias por visitar! </div> 
 
