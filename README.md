@@ -31,6 +31,8 @@
   - [Actualizar Tópico](#6-actualizar-tópico)
   - [Eliminar Tópico](#7-eliminar-tópico)
 - [Consideraciones Futuras](- [Licencia](#-licencia)
+ - [Licencia](#-licencia)
+- [Autor](#-autor)
 - [Agradecimientos](#-agradecimientos)
 
 ## 🧠 Sobre el Proyecto
@@ -367,8 +369,6 @@ Este proyecto está licenciado bajo la Licencia MIT. Consulta el archivo LICENSE
 ---
 
 ## 🙏 Agradecimientos
-
-A la comunidad de Alura por el desafío inspirador.
 
 A **Alura Latam** y **ONE (Oracle Next Education)** por el desafío inspirador.
 
